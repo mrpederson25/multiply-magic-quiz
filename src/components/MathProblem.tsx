@@ -15,11 +15,13 @@ interface MathProblemProps {
 const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
+  const [highlightSplit, setHighlightSplit] = useState<number | undefined>(undefined);
 
   const generateHint = (n1: number, n2: number) => {
     // Split the larger number roughly in half for the hint
     const half = Math.floor(n2 / 2);
     const remainder = n2 - half;
+    setHighlightSplit(half);
     return `Hint: ${n1} × ${n2} = (${n1} × ${half}) + (${n1} × ${remainder})`;
   };
 
@@ -29,6 +31,7 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
 
     if (isCorrect) {
       setFeedback({ isCorrect: true, message: "Correct! Moving to next problem..." });
+      setHighlightSplit(undefined);
       toast({
         description: (
           <div className="flex items-center gap-2 text-successGreen animate-bounce">
@@ -63,8 +66,8 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ArrayVisual num1={num1} num2={num2} />
-        <ArrayVisual num1={num2} num2={num1} />
+        <ArrayVisual num1={num1} num2={num2} highlightSplit={highlightSplit} />
+        <ArrayVisual num1={num2} num2={num1} highlightSplit={highlightSplit} />
       </div>
 
       <div className="flex gap-4 justify-center">
