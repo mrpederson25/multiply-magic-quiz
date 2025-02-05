@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import FeedbackMessage from "./FeedbackMessage";
 import ArrayVisual from "./ArrayVisual";
 import { toast } from "@/hooks/use-toast";
-import { Party } from "lucide-react";
+import { PartyPopper } from "lucide-react";
 
 interface MathProblemProps {
   num1: number;
@@ -25,7 +25,7 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
       toast({
         description: (
           <div className="flex items-center gap-2 text-successGreen animate-bounce">
-            <Party className="h-5 w-5" />
+            <PartyPopper className="h-5 w-5" />
             <span className="font-bold text-lg">Amazing job! You got it right! 🎉</span>
           </div>
         ),
