@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FeedbackMessage from "./FeedbackMessage";
+import ArrayVisual from "./ArrayVisual";
 
 interface MathProblemProps {
   num1: number;
@@ -37,6 +38,7 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
       <div className="text-6xl font-bold text-eduBlue">
         {num1} × {num2} = ?
       </div>
+      <ArrayVisual num1={num1} num2={num2} />
       <div className="flex gap-4 justify-center">
         <Input
           type="number"
