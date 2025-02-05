@@ -20,7 +20,7 @@ const ArrayVisual = ({ num1, num2 }: ArrayVisualProps) => {
         ))}
       </div>
       <p className="text-gray-600 text-sm">
-        {num1} rows × {num2} columns = {num1 * num2} total
+        {num1} rows × {num2} columns = total
       </p>
     </div>
   );
