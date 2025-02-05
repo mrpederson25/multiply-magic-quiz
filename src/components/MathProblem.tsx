@@ -35,10 +35,18 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
 
   return (
     <div className="space-y-6 animate-scaleIn">
-      <div className="text-6xl font-bold text-eduBlue">
-        {num1} × {num2} = ?
+      <div className="flex flex-col items-center gap-2">
+        <div className="text-6xl font-bold text-eduBlue">
+          {num1} × {num2} = ?
+        </div>
+        <div className="text-2xl text-gray-600">
+          {num2} × {num1} = ?
+        </div>
       </div>
-      <ArrayVisual num1={num1} num2={num2} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <ArrayVisual num1={num1} num2={num2} />
+        <ArrayVisual num1={num2} num2={num1} />
+      </div>
       <div className="flex gap-4 justify-center">
         <Input
           type="number"
