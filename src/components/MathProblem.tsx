@@ -16,6 +16,13 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
 
+  const generateHint = (n1: number, n2: number) => {
+    // Split the larger number roughly in half for the hint
+    const half = Math.floor(n2 / 2);
+    const remainder = n2 - half;
+    return `Hint: ${n1} × ${n2} = (${n1} × ${half}) + (${n1} × ${remainder})`;
+  };
+
   const checkAnswer = () => {
     const correctAnswer = num1 * num2;
     const isCorrect = parseInt(userAnswer) === correctAnswer;
@@ -39,7 +46,7 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
     } else {
       setFeedback({
         isCorrect: false,
-        message: `Not quite. ${num1} × ${num2} = ${correctAnswer}. Let's try again!`,
+        message: generateHint(num1, num2),
       });
     }
   };
