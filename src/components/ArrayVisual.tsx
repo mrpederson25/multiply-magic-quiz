@@ -15,10 +15,25 @@ const ArrayVisual = ({ num1, num2, highlightSplit }: ArrayVisualProps) => {
           {num1}
         </div>
         
-        {/* Column label */}
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-gray-600 font-medium">
-          {num2}
-        </div>
+        {/* Column labels */}
+        {highlightSplit ? (
+          <>
+            <div className="absolute -top-8 left-0 text-purple-600 font-medium" style={{
+              transform: `translateX(${(highlightSplit * 24) / 2}px)`,
+            }}>
+              {highlightSplit}
+            </div>
+            <div className="absolute -top-8 right-0 text-orange-600 font-medium" style={{
+              transform: `translateX(${((num2 - highlightSplit) * 24) / 2}px)`,
+            }}>
+              {num2 - highlightSplit}
+            </div>
+          </>
+        ) : (
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-gray-600 font-medium">
+            {num2}
+          </div>
+        )}
         
         <div className="grid gap-1" style={{ 
           gridTemplateColumns: `repeat(${num2}, minmax(0, 1fr))`,
@@ -44,7 +59,15 @@ const ArrayVisual = ({ num1, num2, highlightSplit }: ArrayVisualProps) => {
         </div>
       </div>
       <p className="text-gray-600 text-sm">
-        {num1} rows × {num2} columns = product
+        {highlightSplit ? (
+          <>
+            {num1} × {highlightSplit} + {num1} × {num2 - highlightSplit} = product
+          </>
+        ) : (
+          <>
+            {num1} rows × {num2} columns = product
+          </>
+        )}
       </p>
     </div>
   );
