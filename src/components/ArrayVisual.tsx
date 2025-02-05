@@ -18,14 +18,22 @@ const ArrayVisual = ({ num1, num2, highlightSplit }: ArrayVisualProps) => {
         {/* Column labels */}
         {highlightSplit ? (
           <>
-            <div className="absolute -top-8 left-0 text-purple-600 font-medium" style={{
-              transform: `translateX(${(highlightSplit * 24) / 2}px)`,
-            }}>
+            <div 
+              className="absolute -top-8 text-purple-600 font-medium" 
+              style={{
+                left: `${(highlightSplit * 24) / 2}px`,
+                transform: 'translateX(-50%)',
+              }}
+            >
               {highlightSplit}
             </div>
-            <div className="absolute -top-8 right-0 text-orange-600 font-medium" style={{
-              transform: `translateX(${((num2 - highlightSplit) * 24) / 2}px)`,
-            }}>
+            <div 
+              className="absolute -top-8 text-orange-600 font-medium"
+              style={{
+                left: `${highlightSplit * 24 + ((num2 - highlightSplit) * 24) / 2}px`,
+                transform: 'translateX(-50%)',
+              }}
+            >
               {num2 - highlightSplit}
             </div>
           </>
