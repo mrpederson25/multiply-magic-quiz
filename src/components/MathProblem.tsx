@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FeedbackMessage from "./FeedbackMessage";
@@ -16,9 +16,14 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
   const [highlightSplit, setHighlightSplit] = useState<number | undefined>(undefined);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus the input when the component mounts or when numbers change
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [num1, num2]);
 
   const generateHint = (n1: number, n2: number) => {
-    // Split the larger number roughly in half for the hint
     const half = Math.floor(n2 / 2);
     const remainder = n2 - half;
     setHighlightSplit(half);
@@ -54,6 +59,13 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      checkAnswer();
+    }
+  };
+
   return (
     <div className="space-y-6 animate-scaleIn">
       <div className="flex flex-col items-center gap-2">
@@ -72,9 +84,11 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
 
       <div className="flex gap-4 justify-center">
         <Input
+          ref={inputRef}
           type="number"
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
+          onKeyDown={handleKeyPress}
           className="text-2xl w-32 text-center"
           placeholder="?"
         />
