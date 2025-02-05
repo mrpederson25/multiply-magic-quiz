@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FeedbackMessage from "./FeedbackMessage";
 import ArrayVisual from "./ArrayVisual";
+import { toast } from "@/hooks/use-toast";
+import { Party } from "lucide-react";
 
 interface MathProblemProps {
   num1: number;
@@ -20,6 +22,15 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
 
     if (isCorrect) {
       setFeedback({ isCorrect: true, message: "Correct! Moving to next problem..." });
+      toast({
+        description: (
+          <div className="flex items-center gap-2 text-successGreen animate-bounce">
+            <Party className="h-5 w-5" />
+            <span className="font-bold text-lg">Amazing job! You got it right! 🎉</span>
+          </div>
+        ),
+        className: "bg-successGreen/10 border-successGreen text-successGreen",
+      });
       setTimeout(() => {
         setUserAnswer("");
         setFeedback(null);
@@ -43,10 +54,12 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
           {num2} × {num1} = ?
         </div>
       </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ArrayVisual num1={num1} num2={num2} />
         <ArrayVisual num1={num2} num2={num1} />
       </div>
+
       <div className="flex gap-4 justify-center">
         <Input
           type="number"
@@ -59,6 +72,7 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
           Check
         </Button>
       </div>
+
       {feedback && (
         <FeedbackMessage isCorrect={feedback.isCorrect} message={feedback.message} />
       )}
