@@ -1,0 +1,59 @@
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FeedbackMessage from "./FeedbackMessage";
+
+interface MathProblemProps {
+  num1: number;
+  num2: number;
+  onCorrectAnswer: () => void;
+}
+
+const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
+  const [userAnswer, setUserAnswer] = useState("");
+  const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
+
+  const checkAnswer = () => {
+    const correctAnswer = num1 * num2;
+    const isCorrect = parseInt(userAnswer) === correctAnswer;
+
+    if (isCorrect) {
+      setFeedback({ isCorrect: true, message: "Correct! Moving to next problem..." });
+      setTimeout(() => {
+        setUserAnswer("");
+        setFeedback(null);
+        onCorrectAnswer();
+      }, 1500);
+    } else {
+      setFeedback({
+        isCorrect: false,
+        message: `Not quite. ${num1} × ${num2} = ${correctAnswer}. Let's try again!`,
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-6 animate-scaleIn">
+      <div className="text-6xl font-bold text-eduBlue">
+        {num1} × {num2} = ?
+      </div>
+      <div className="flex gap-4 justify-center">
+        <Input
+          type="number"
+          value={userAnswer}
+          onChange={(e) => setUserAnswer(e.target.value)}
+          className="text-2xl w-32 text-center"
+          placeholder="?"
+        />
+        <Button onClick={checkAnswer} className="bg-eduBlue hover:bg-eduBlue/90 text-xl px-8">
+          Check
+        </Button>
+      </div>
+      {feedback && (
+        <FeedbackMessage isCorrect={feedback.isCorrect} message={feedback.message} />
+      )}
+    </div>
+  );
+};
+
+export default MathProblem;

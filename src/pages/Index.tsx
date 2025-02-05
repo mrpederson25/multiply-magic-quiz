@@ -1,11 +1,42 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import MathProblem from "@/components/MathProblem";
+import { generateProblem, getEncouragement } from "@/utils/mathUtils";
+import { toast } from "@/components/ui/use-toast";
 
 const Index = () => {
+  const [problem, setProblem] = useState(generateProblem());
+  const [score, setScore] = useState(0);
+
+  const handleCorrectAnswer = () => {
+    setScore((prev) => prev + 1);
+    setProblem(generateProblem());
+    toast({
+      description: getEncouragement(),
+      className: "bg-successGreen/10 text-successGreen border-none",
+    });
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-softBackground flex flex-col items-center justify-center p-4">
+      <div className="max-w-2xl w-full">
+        <div className="bg-white rounded-2xl shadow-lg p-8 space-y-8">
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-bold text-gray-800">Multiplication Practice</h1>
+            <p className="text-gray-600">Master single-digit multiplication!</p>
+          </div>
+          
+          <div className="text-right">
+            <span className="text-eduBlue font-semibold">
+              Score: {score}
+            </span>
+          </div>
+
+          <MathProblem
+            num1={problem.num1}
+            num2={problem.num2}
+            onCorrectAnswer={handleCorrectAnswer}
+          />
+        </div>
       </div>
     </div>
   );
