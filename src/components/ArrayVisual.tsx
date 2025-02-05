@@ -61,7 +61,7 @@ const ArrayVisual = ({ num1, num2, highlightSplit }: ArrayVisualProps) => {
       <p className="text-gray-600 text-sm">
         {highlightSplit ? (
           <>
-            {num1} × {highlightSplit} + {num1} × {num2 - highlightSplit} = product
+            ({num1} × {highlightSplit}) + ({num1} × {num2 - highlightSplit}) = product
           </>
         ) : (
           <>
