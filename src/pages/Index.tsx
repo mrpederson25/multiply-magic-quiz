@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import MathProblem from "@/components/MathProblem";
 import { generateProblem, getEncouragement } from "@/utils/mathUtils";
@@ -21,8 +22,8 @@ const Index = () => {
       <div className="max-w-2xl w-full">
         <div className="bg-white rounded-2xl shadow-lg p-8 space-y-8">
           <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-gray-800">Multiplication Practice</h1>
-            <p className="text-gray-600">Master single-digit multiplication!</p>
+            <h1 className="text-3xl font-bold text-gray-800">Math Practice</h1>
+            <p className="text-gray-600">Master multiplication and division!</p>
           </div>
           
           <div className="text-right">
@@ -34,6 +35,7 @@ const Index = () => {
           <MathProblem
             num1={problem.num1}
             num2={problem.num2}
+            type={problem.type}
             onCorrectAnswer={handleCorrectAnswer}
           />
         </div>

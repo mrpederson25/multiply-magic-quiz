@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,10 +10,11 @@ import { PartyPopper } from "lucide-react";
 interface MathProblemProps {
   num1: number;
   num2: number;
+  type: 'multiplication' | 'division';
   onCorrectAnswer: () => void;
 }
 
-const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
+const MathProblem = ({ num1, num2, type, onCorrectAnswer }: MathProblemProps) => {
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
   const [highlightSplit, setHighlightSplit] = useState<number | undefined>(undefined);
@@ -21,17 +23,22 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
   // Auto-focus the input when the component mounts or when numbers change
   useEffect(() => {
     inputRef.current?.focus();
-  }, [num1, num2]);
+  }, [num1, num2, type]);
 
-  const generateHint = (n1: number, n2: number) => {
-    const half = Math.floor(n2 / 2);
-    const remainder = n2 - half;
-    setHighlightSplit(half);
-    return `Hint: ${n1} × ${n2} = (${n1} × ${half}) + (${n1} × ${remainder})`;
+  const generateHint = (n1: number, n2: number, problemType: 'multiplication' | 'division') => {
+    if (problemType === 'multiplication') {
+      const half = Math.floor(n2 / 2);
+      const remainder = n2 - half;
+      setHighlightSplit(half);
+      return `Hint: ${n1} × ${n2} = (${n1} × ${half}) + (${n1} × ${remainder})`;
+    } else {
+      setHighlightSplit(Math.floor(n2 / 2));
+      return `Hint: ${n1} ÷ ${n2} means how many groups of ${n2} make ${n1}`;
+    }
   };
 
   const checkAnswer = () => {
-    const correctAnswer = num1 * num2;
+    const correctAnswer = type === 'multiplication' ? num1 * num2 : num1 / num2;
     const isCorrect = parseInt(userAnswer) === correctAnswer;
 
     if (isCorrect) {
@@ -54,7 +61,7 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
     } else {
       setFeedback({
         isCorrect: false,
-        message: generateHint(num1, num2),
+        message: generateHint(num1, num2, type),
       });
     }
   };
@@ -66,20 +73,40 @@ const MathProblem = ({ num1, num2, onCorrectAnswer }: MathProblemProps) => {
     }
   };
 
+  // For division, we want to show the array as num1 total items divided into groups of num2
+  const visualNum1 = type === 'multiplication' ? num1 : Math.ceil(num1 / num2);
+  const visualNum2 = type === 'multiplication' ? num2 : num2;
+
   return (
     <div className="space-y-6 animate-scaleIn">
       <div className="flex flex-col items-center gap-2">
         <div className="text-6xl font-bold text-eduBlue">
-          {num1} × {num2} = ?
+          {type === 'multiplication' ? (
+            <>
+              {num1} × {num2} = ?
+            </>
+          ) : (
+            <>
+              {num1} ÷ {num2} = ?
+            </>
+          )}
         </div>
         <div className="text-2xl text-gray-600">
-          {num2} × {num1} = ?
+          {type === 'multiplication' ? (
+            <>
+              {num2} × {num1} = ?
+            </>
+          ) : (
+            <>
+              How many groups of {num2} make {num1}?
+            </>
+          )}
         </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ArrayVisual num1={num1} num2={num2} highlightSplit={highlightSplit} />
-        <ArrayVisual num1={num2} num2={num1} highlightSplit={highlightSplit} />
+        <ArrayVisual num1={visualNum1} num2={visualNum2} highlightSplit={highlightSplit} />
+        <ArrayVisual num1={visualNum2} num2={visualNum1} highlightSplit={highlightSplit} />
       </div>
 
       <div className="flex gap-4 justify-center">
